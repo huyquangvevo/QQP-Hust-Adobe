@@ -6,14 +6,14 @@ import tqdm
 
 import gensim
 
-df = pd.read_csv("./QQP/dev.tsv",delimiter='\t',encoding='utf-8')
+df = pd.read_csv("../Report/BERT_LightGBM_prediction.tsv",delimiter='\t',encoding='utf-8')
 
 df['question1'] = df['question1'].apply(lambda x: str(x))
 df['question2'] = df['question2'].apply(lambda x: str(x))
 
 # df['id'] = df['id'].apply(lambda x: str(x))
 
-df = df.loc[df['is_duplicate'] == 1]
+# df = df.loc[df['is_duplicate'] == 1]
 
 
 list_q1 = list(df['question1'])
@@ -52,5 +52,8 @@ for id_ in range(len(list_q1)):
         #print(id_pair[id_])
         df_filter = df_filter.append(pd.DataFrame(df.loc[df['id'] == id_pair[id_]]),ignore_index=True)
     #    break
+
 print(count)
-df_filter.to_csv('data/sample_label_1_diff_1vs1_dev.tsv',index=False,sep='\t',encoding='utf-8')
+print(df_filter.loc[df_filter['LightGBM_prediction'] == 1].shape)
+print(df_filter.loc[df_filter['is_duplicate'] == 1].shape)
+df_filter.to_csv('../Report/bert_lightgbm_prediction_diff_1vs1.tsv',index=False,sep='\t',encoding='utf-8')
